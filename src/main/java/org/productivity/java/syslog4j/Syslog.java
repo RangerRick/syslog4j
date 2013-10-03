@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j;
 
+import java.io.File;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,6 +12,9 @@ import org.productivity.java.syslog4j.impl.unix.UnixSyslogConfig;
 import org.productivity.java.syslog4j.impl.unix.socket.UnixSocketSyslogConfig;
 import org.productivity.java.syslog4j.util.OSDetectUtility;
 import org.productivity.java.syslog4j.util.SyslogUtility;
+
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
 /**
  * This class provides a Singleton interface for Syslog4j client implementations.
@@ -175,8 +179,46 @@ public final class Syslog implements SyslogConstants {
 		createInstance(TCP,new TCPNetSyslogConfig());
 		
 		if (OSDetectUtility.isUnix() && SyslogUtility.isClassExists(JNA_NATIVE_CLASS)) {
-			createInstance(UNIX_SYSLOG,new UnixSyslogConfig());
-			createInstance(UNIX_SOCKET,new UnixSocketSyslogConfig());
+			final UnixSyslogConfig syslogConfig = new UnixSyslogConfig();
+			final UnixSocketSyslogConfig socketSyslogConfig = new UnixSocketSyslogConfig();
+
+			final String[] libdirs = new String[] { "/lib", "/usr/lib", "/lib64", "/usr/lib64" };
+
+			boolean libnslFound = false;
+			NSLLOOP: for (final String dir : libdirs) {
+				final File libDir = new File(dir);
+				if (libDir.exists() && libDir.isDirectory()) {
+					for (final File file : libDir.listFiles()) {
+						if (file.getName().startsWith("libnsl.")) {
+							libnslFound = true;
+							break NSLLOOP;
+						}
+					}
+				}
+			}
+
+			SOCKETLOOP: for (final String dir : libdirs) {
+				final File libDir = new File(dir);
+				if (libDir.exists() && libDir.isDirectory()) {
+					for (final File file : libDir.listFiles()) {
+						if (file.getName().startsWith("libsocket.")) {
+							socketSyslogConfig.setLibrary("socket");
+							break SOCKETLOOP;
+						}
+					}
+				}
+			}
+
+			// load libc
+			createInstance(UNIX_SYSLOG,syslogConfig);
+
+			// load libnsl
+			if (libnslFound) {
+				Native.loadLibrary("nsl", Library.class);
+			}
+
+			// load libsocket
+			createInstance(UNIX_SOCKET,socketSyslogConfig);
 		}
 	}
 	
