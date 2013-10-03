@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.syslog4j</groupId>
+  <artifactId>syslog4j</artifactId>
+  <version>0.9.30-ONMS-1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>syslog4j</name>
+
+  <url>http://www.syslog4j.org</url>
+  
+  <licenses>
+    <license>
+      <name>LGPL</name>
+      <url>http://www.gnu.org/licenses/lgpl-2.1.html</url>
+    </license>
+  </licenses>
+
+  <description>Syslog4j provides client and server implementations of the BSD Syslog protocol (RFC 3164) and the draft "structured syslog" protocol (RFC Draft). 
+  </description>
+  
+  <scm>
+    <url>No SCM URL available</url>
+  </scm>
+  
+  <dependencies>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>3.2.7-ONMS</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>platform</artifactId>
+      <version>3.2.7-ONMS</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.5.4</version>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- logging -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.0.6</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.14</version>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+  
+  <profiles>
+  
+    <!-- ========================================================================== -->
+    <!-- Use this profile to pull down syslog4j and build the maven upload bundle   -->
+    <!-- ========================================================================== -->
+    <profile>
+      <id>build-maven-upload-bundle</id>
+      <properties>
+        <bundle.directory>${project.build.directory}/${project.artifactId}-${project.version}-bundle.jar</bundle.directory>
+      </properties>
+      <build>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>wagon-maven-plugin</artifactId>
+            <version>1.0-beta-3</version>
+            <executions>
+              <execution>
+                <id>download-orginal-packages</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>download</goal>
+                </goals>
+                <configuration>
+                  <url>http://www.syslog4j.org/downloads</url>
+                  <includes>${project.artifactId}-${project.version}-*</includes>
+                  <toDir>${project.build.directory}/download</toDir>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- repackage original javadoc archive to conform to maven format -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>truezip-maven-plugin</artifactId>
+            <version>1.0-beta-4</version>
+            <executions>
+              <execution>
+                <id>repackage-javadoc</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <fileset>
+                    <outputDirectory>${project.build.directory}/staging/${project.artifactId}-${project.version}-javadoc.jar</outputDirectory>
+                    <directory>${project.build.directory}/download/${project.artifactId}-${project.version}-doc.zip/javadoc</directory>
+                  </fileset>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <!--  use antrun to move files to staging directory and zip it up unaltered -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.2</version>
+            <executions>
+              <execution>
+                <id>move-file-to-upload-dir</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <tasks>
+                    <copy file="${project.build.directory}/download/${project.artifactId}-${project.version}-bin.jar"
+                          tofile="${project.build.directory}/staging/${project.artifactId}-${project.version}.jar"/>
+                    <copy file="${project.build.directory}/download/${project.artifactId}-${project.version}-bin.jar"
+                          tofile="${project.build.directory}/staging/${project.artifactId}-${project.version}.jar"/>
+                    <copy file="${project.build.directory}/download/${project.artifactId}-${project.version}-src.jar"
+                          tofile="${project.build.directory}/staging/${project.artifactId}-${project.version}-sources.jar"/>
+                    <copy file="${basedir}/pom.xml"
+                          tofile="${project.build.directory}/staging/pom.xml"/>
+                          
+                    <!-- overwrite the one created by jar plugin -->
+                    <copy file="${project.build.directory}/download/${project.artifactId}-${project.version}-bin.jar"
+                          tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar" overwrite="true"/>
+                          
+                    <zip destfile="${project.build.directory}/${project.artifactId}-${project.version}-bundle.jar"  basedir="${project.build.directory}/staging"  />                          
+                  </tasks>
+                </configuration>
+              </execution>
+             </executions>
+           </plugin>
+          
+          
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <snapshots><enabled>false</enabled></snapshots>
+      <releases><enabled>true</enabled></releases>
+      <id>opennms-repo</id>
+      <name>OpenNMS Repository</name>
+      <url>http://maven.opennms.org/content/groups/opennms.org-release</url>
+    </repository>
+  </repositories>
+
+</project> 
