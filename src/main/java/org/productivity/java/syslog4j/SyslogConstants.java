@@ -123,8 +123,8 @@ public interface SyslogConstants extends Serializable {
 	
 	public static final int SERVER_SHUTDOWN_WAIT_DEFAULT = 500;
 	
-	public static final String SYSLOG_LIBRARY_DEFAULT = "c";
-	public static final String SYSLOG_SOCKET_LIBRARY_DEFAULT = "c";
+	public static final String SYSLOG_LIBRARY_DEFAULT = null;
+	public static final String SYSLOG_SOCKET_LIBRARY_DEFAULT = null;
 	public static final int SYSLOG_SOCKET_PROTOCOL_DEFAULT = 0;
 	public static final String SYSLOG_SOCKET_PATH_DEFAULT = "/dev/log";
 	
