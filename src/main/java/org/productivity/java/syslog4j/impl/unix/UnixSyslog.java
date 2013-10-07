@@ -10,40 +10,39 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 
 /**
-* UnixSyslog is an extension of AbstractSyslog that provides support for
-* Unix-based syslog clients.
-* 
-* <p>This class requires the JNA (Java Native Access) library to directly
-* access the native C libraries utilized on Unix platforms.</p>
-* 
-* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
-* of the LGPL license is available in the META-INF folder in all
-* distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
-* @author &lt;syslog4j@productivity.org&gt;
-* @version $Id: UnixSyslog.java,v 1.24 2009/07/22 15:54:23 cvs Exp $
-*/
+ * UnixSyslog is an extension of AbstractSyslog that provides support for
+ * Unix-based syslog clients.
+ * 
+ * <p>This class requires the JNA (Java Native Access) library to directly
+ * access the native C libraries utilized on Unix platforms.</p>
+ * 
+ * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+ * of the LGPL license is available in the META-INF folder in all
+ * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
+ * 
+ * @author &lt;syslog4j@productivity.org&gt;
+ * @version $Id: UnixSyslog.java,v 1.24 2009/07/22 15:54:23 cvs Exp $
+ */
 public class UnixSyslog extends AbstractSyslog {
-	private static final long serialVersionUID = 4973353204252276740L;
-	
+	private static final long serialVersionUID = 8963867437780176934L;
 	protected UnixSyslogConfig unixSyslogConfig = null; 
-	
-    protected interface CLibrary extends Library {
-        public void openlog(final String ident, int option, int facility);
-        public void syslog(int priority, final String format, final String message);
-        public void closelog();
-    }
-    
-	protected static int currentFacility = -1;
-    protected static boolean openlogCalled = false;
-	
-    protected static CLibrary libraryInstance = null;
 
-	protected static synchronized void loadLibrary(UnixSyslogConfig config) throws SyslogRuntimeException {
+	protected interface CLibrary extends Library {
+		public void openlog(String ident, int option, int facility);
+		public void syslog(int priority, String format, String message);
+		public void closelog();
+	}
+
+	protected static int currentFacility = -1;
+	protected static boolean openlogCalled = false;
+
+	protected static CLibrary libraryInstance = null;
+
+	protected static synchronized void loadLibrary(final UnixSyslogConfig config) throws SyslogRuntimeException {
 		if (!OSDetectUtility.isUnix()) {
 			throw new SyslogRuntimeException("UnixSyslog not supported on non-Unix platforms");
 		}
-		
+
 		if (libraryInstance == null) {
 			libraryInstance = (CLibrary) Native.loadLibrary(config.getLibrary(),CLibrary.class);
 		}
@@ -52,50 +51,48 @@ public class UnixSyslog extends AbstractSyslog {
 	public void initialize() throws SyslogRuntimeException {
 		try {
 			this.unixSyslogConfig = (UnixSyslogConfig) this.syslogConfig;
-			
-		} catch (ClassCastException cce) {
+		} catch (final ClassCastException cce) {
 			throw new SyslogRuntimeException("config must be of type UnixSyslogConfig");
 		}
-		
+
 		loadLibrary(this.unixSyslogConfig);	
 	}
-	
-	protected static void write(int level, String message, UnixSyslogConfig config) throws SyslogRuntimeException {
+
+	protected static void write(final int level, final String message, final UnixSyslogConfig config) throws SyslogRuntimeException {
 		synchronized(libraryInstance) {
 			if (currentFacility != config.getFacility()) {
 				if (openlogCalled) {
 					libraryInstance.closelog();
 					openlogCalled = false;
 				}
-				
+
 				currentFacility = config.getFacility();
 			}
-			
+
 			if (!openlogCalled) {
 				String ident = config.getIdent();
-				
+
 				if (ident != null && "".equals(ident.trim())) {
 					ident = null;
 				}
-				
+
 				libraryInstance.openlog(ident,config.getOption(),currentFacility);
 				openlogCalled = true;
 			}
 
-			int priority = currentFacility | level;
-
+			final int priority = currentFacility | level;
 			libraryInstance.syslog(priority,"%s",message);
 		}
 	}
 
-	protected void write(byte[] message) throws SyslogRuntimeException {
+	protected void write(final byte[] message) throws SyslogRuntimeException {
 		// NO-OP
 	}
 
-	public void log(SyslogMessageProcessorIF messageProcessor, int level, String message) {
+	public void log(final SyslogMessageProcessorIF messageProcessor, final int level, final String message) {
 		write(level,message,this.unixSyslogConfig);
 	}
-	
+
 	public void flush() throws SyslogRuntimeException {
 		synchronized(libraryInstance) {
 			libraryInstance.closelog();
@@ -111,11 +108,10 @@ public class UnixSyslog extends AbstractSyslog {
 		return null;
 	}
 
-	public void returnWriter(AbstractSyslogWriter syslogWriter) {
-		//
+	public void returnWriter(final AbstractSyslogWriter syslogWriter) {
 	}
 
-	protected String prefixMessage(String message, String suffix) {
-		 return message;
+	protected String prefixMessage(final String message, final String suffix) {
+		return message;
 	}
 }

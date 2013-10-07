@@ -20,26 +20,21 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 * @version $Id: SyslogUtility.java,v 1.18 2009/07/22 15:54:23 cvs Exp $
 */
 public final class SyslogUtility implements SyslogConstants {
-	private static final long serialVersionUID = 915031554586613648L;
-	
+	private static final long serialVersionUID = -8122702277216041214L;
+
 	private SyslogUtility() {
 		//
 	}
 	
-	public static final InetAddress getInetAddress(String host) throws SyslogRuntimeException {
-		InetAddress address = null;
-		
+	public static final InetAddress getInetAddress(final String host) throws SyslogRuntimeException {
 		try {
-			address = InetAddress.getByName(host);
-			
-		} catch (UnknownHostException uhe) {
+			return InetAddress.getByName(host);
+		} catch (final UnknownHostException uhe) {
 			throw new SyslogRuntimeException(uhe);
 		}
-		
-		return address;
 	}
 	
-	public static final String getFacilityString(int syslogFacility) {
+	public static final String getFacilityString(final int syslogFacility) {
 		switch(syslogFacility) {
 			case FACILITY_KERN:			return "kern";
 			case FACILITY_USER:			return "user";
@@ -66,7 +61,7 @@ public final class SyslogUtility implements SyslogConstants {
 		}
 	}
 	  
-	public static final int getFacility(String facilityName) {
+	public static final int getFacility(final String facilityName) {
 		String _facilityName = facilityName;
 		
 		if (facilityName == null) {
@@ -100,7 +95,7 @@ public final class SyslogUtility implements SyslogConstants {
 		}
 	}
 	
-	public static final int getLevel(String levelName) {
+	public static final int getLevel(final String levelName) {
 		String _levelName = levelName;
 		
 		if (levelName == null) {
@@ -122,12 +117,11 @@ public final class SyslogUtility implements SyslogConstants {
 		}
 	}
 
-	public static final boolean isClassExists(String className) {
+	public static final boolean isClassExists(final String className) {
 		try {
 			Class.forName(className);
 			return true;
-			
-		} catch (ClassNotFoundException cnfe) {
+		} catch (final ClassNotFoundException cnfe) {
 			//
 		}
 		
@@ -138,43 +132,32 @@ public final class SyslogUtility implements SyslogConstants {
 		String localName = SEND_LOCAL_NAME_DEFAULT_VALUE;
 		
         try {
-        	InetAddress addr = InetAddress.getLocalHost();
+        	final InetAddress addr = InetAddress.getLocalHost();
         	localName = addr.getHostName();
-            
-        } catch (UnknownHostException uhe) {
+        } catch (final UnknownHostException uhe) {
         	//
         }
         
         return localName;
 	}
 	
-	public static final byte[] getBytes(SyslogCharSetIF syslogCharSet, String data) {
-		byte[] dataBytes = null;
-		
+	public static final byte[] getBytes(final SyslogCharSetIF syslogCharSet, final String data) {
 		try {
-			dataBytes = data.getBytes(syslogCharSet.getCharSet());
-			
-		} catch (UnsupportedEncodingException uee) {
-			dataBytes = data.getBytes();
+			return data.getBytes(syslogCharSet.getCharSet());
+		} catch (final UnsupportedEncodingException uee) {
+			return data.getBytes();
 		}
-		
-		return dataBytes;
 	}
 	
-	public static final String newString(SyslogCharSetIF syslogCharSet, byte[] dataBytes) {
-		String data = null;
-		
+	public static final String newString(final SyslogCharSetIF syslogCharSet, final byte[] dataBytes) {
 		try {
-			data = new String(dataBytes,syslogCharSet.getCharSet());
-			
-		} catch (UnsupportedEncodingException uee) {
-			data = new String(dataBytes);
+			return new String(dataBytes,syslogCharSet.getCharSet());
+		} catch (final UnsupportedEncodingException uee) {
+			return new String(dataBytes);
 		}
-		
-		return data;
 	}
 	
-	public static final String getLevelString(int level) {
+	public static final String getLevelString(final int level) {
 		switch(level) {
 			case SyslogConstants.LEVEL_DEBUG: return "DEBUG";
 			case SyslogConstants.LEVEL_INFO: return "INFO";

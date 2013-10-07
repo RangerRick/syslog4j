@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.impl.unix;
 
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 
@@ -25,7 +26,7 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
 		this.setSendLocalName(false);
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return UnixSyslog.class;
 	}
 
@@ -37,11 +38,11 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
 		return 0;
 	}
 
-	public void setHost(String host) throws SyslogRuntimeException {
+	public void setHost(final String host) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
 	}
 
-	public void setPort(int port) throws SyslogRuntimeException {
+	public void setPort(final int port) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
 	}
 
@@ -49,7 +50,7 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
 		return this.library;
 	}
 
-	public void setLibrary(String library) {
+	public void setLibrary(final String library) {
 		this.library = library;
 	}
 
@@ -57,7 +58,7 @@ public class UnixSyslogConfig extends AbstractSyslogConfig {
 		return this.option;
 	}
 
-	public void setOption(int option) {
+	public void setOption(final int option) {
 		this.option = option;
 	}
 }

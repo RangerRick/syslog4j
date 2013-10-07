@@ -24,8 +24,8 @@ import com.sun.jna.Structure;
 * @version $Id: UnixSocketSyslog.java,v 1.10 2009/01/28 15:13:53 cvs Exp $
 */
 public class UnixSocketSyslog extends AbstractSyslog {
-	private static final long serialVersionUID = 39878807911936785L;
-	
+	private static final long serialVersionUID = -2077303010023421198L;
+
 	protected static class SockAddr extends Structure {
 		public final static int SUN_PATH_SIZE = 108;
 		public final static byte[] ZERO_BYTE = new byte[] { 0 };
@@ -33,7 +33,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
 		public short sun_family = 1;
 		public byte[] sun_path = new byte[SUN_PATH_SIZE];
 		
-		public void setSunPath(String sunPath) {
+		public void setSunPath(final String sunPath) {
 			System.arraycopy(sunPath.getBytes(), 0,this.sun_path, 0, sunPath.length());
 			System.arraycopy(ZERO_BYTE,0,this.sun_path,sunPath.length(),1);
 		}
@@ -67,8 +67,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
 	public void initialize() throws SyslogRuntimeException {
 		try {
 			this.unixSocketSyslogConfig = (UnixSocketSyslogConfig) this.syslogConfig;
-			
-		} catch (ClassCastException cce) {
+		} catch (final ClassCastException cce) {
 			throw new SyslogRuntimeException("config must be of type UnixSocketSyslogConfig");
 		}
 		
@@ -81,7 +80,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
 			return;
 		}
 		
-		SockAddr sockAddr = new SockAddr();
+		final SockAddr sockAddr = new SockAddr();
 		
 		sockAddr.sun_family = this.unixSocketSyslogConfig.getFamily();
 		sockAddr.setSunPath(this.unixSocketSyslogConfig.getPath());
@@ -94,7 +93,7 @@ public class UnixSocketSyslog extends AbstractSyslog {
 		}
 	}
 
-	protected void write(byte[] message) throws SyslogRuntimeException {
+	protected void write(final byte[] message) throws SyslogRuntimeException {
 		if (this.fd == -1) {
 			return;
 		}
@@ -120,7 +119,6 @@ public class UnixSocketSyslog extends AbstractSyslog {
 		return null;
 	}
 
-	public void returnWriter(AbstractSyslogWriter syslogWriter) {
-		//
+	public void returnWriter(final AbstractSyslogWriter syslogWriter) {
 	}
 }

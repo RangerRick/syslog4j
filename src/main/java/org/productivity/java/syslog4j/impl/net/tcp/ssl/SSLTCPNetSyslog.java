@@ -15,32 +15,31 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslog;
 * @version $Id: SSLTCPNetSyslog.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslog extends TCPNetSyslog {
-	private static final long serialVersionUID = 2766654802524487317L;
+	private static final long serialVersionUID = -6889145311464072496L;
 
 	public void initialize() throws SyslogRuntimeException {
 		super.initialize();
 		
-		SSLTCPNetSyslogConfigIF sslTcpNetSyslogConfig = (SSLTCPNetSyslogConfigIF) this.tcpNetSyslogConfig;
-		
-		String keyStore = sslTcpNetSyslogConfig.getKeyStore();
+		final SSLTCPNetSyslogConfigIF sslTcpNetSyslogConfig = (SSLTCPNetSyslogConfigIF) this.tcpNetSyslogConfig;
+		final String keyStore = sslTcpNetSyslogConfig.getKeyStore();
 		
 		if (keyStore != null && !"".equals(keyStore.trim())) {
 			System.setProperty("javax.net.ssl.keyStore",keyStore);
 		}
 
-		String keyStorePassword = sslTcpNetSyslogConfig.getKeyStorePassword();
+		final String keyStorePassword = sslTcpNetSyslogConfig.getKeyStorePassword();
 		
 		if (keyStorePassword != null && !"".equals(keyStorePassword.trim())) {
 			System.setProperty("javax.net.ssl.keyStorePassword",keyStorePassword);
 		}
 
-		String trustStore = sslTcpNetSyslogConfig.getTrustStore();
+		final String trustStore = sslTcpNetSyslogConfig.getTrustStore();
 		
 		if (trustStore != null && !"".equals(trustStore.trim())) {
 			System.setProperty("javax.net.ssl.trustStore",trustStore);
 		}
 
-		String trustStorePassword = sslTcpNetSyslogConfig.getTrustStorePassword();
+		final String trustStorePassword = sslTcpNetSyslogConfig.getTrustStorePassword();
 		
 		if (trustStorePassword != null && !"".equals(trustStorePassword.trim())) {
 			System.setProperty("javax.net.ssl.trustStorePassword",trustStorePassword);

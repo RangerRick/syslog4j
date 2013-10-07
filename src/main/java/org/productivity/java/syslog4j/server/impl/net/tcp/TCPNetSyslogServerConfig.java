@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.server.impl.net.tcp;
 
+import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.net.AbstractNetSyslogServerConfig;
 
 /**
@@ -13,39 +14,38 @@ import org.productivity.java.syslog4j.server.impl.net.AbstractNetSyslogServerCon
 * @version $Id: TCPNetSyslogServerConfig.java,v 1.6 2009/03/29 17:38:58 cvs Exp $
 */
 public class TCPNetSyslogServerConfig extends AbstractNetSyslogServerConfig implements TCPNetSyslogServerConfigIF {
-	private static final long serialVersionUID = -1546696301177599370L;
-	
+	private static final long serialVersionUID = -2491399622961724926L;
+
 	protected int backlog = 0;
 
 	public TCPNetSyslogServerConfig() {
-		//
 	}
 
-	public TCPNetSyslogServerConfig(int port) {
+	public TCPNetSyslogServerConfig(final int port) {
 		this.port = port;
 	}
 
-	public TCPNetSyslogServerConfig(int port, int backlog) {
-		this.port = port;
-		this.backlog = backlog;
-	}
-
-	public TCPNetSyslogServerConfig(String host) {
-		this.host = host;
-	}
-
-	public TCPNetSyslogServerConfig(String host, int port) {
-		this.host = host;
-		this.port = port;
-	}
-
-	public TCPNetSyslogServerConfig(String host, int port, int backlog) {
-		this.host = host;
+	public TCPNetSyslogServerConfig(final int port, final int backlog) {
 		this.port = port;
 		this.backlog = backlog;
 	}
 
-	public Class getSyslogServerClass() {
+	public TCPNetSyslogServerConfig(final String host) {
+		this.host = host;
+	}
+
+	public TCPNetSyslogServerConfig(final String host, final int port) {
+		this.host = host;
+		this.port = port;
+	}
+
+	public TCPNetSyslogServerConfig(final String host, final int port, final int backlog) {
+		this.host = host;
+		this.port = port;
+		this.backlog = backlog;
+	}
+
+	public Class<? extends SyslogServerIF> getSyslogServerClass() {
 		return TCPNetSyslogServer.class;
 	}
 
@@ -53,7 +53,7 @@ public class TCPNetSyslogServerConfig extends AbstractNetSyslogServerConfig impl
 		return this.backlog;
 	}
 
-	public void setBacklog(int backlog) {
+	public void setBacklog(final int backlog) {
 		this.backlog = backlog;
 	}
 }

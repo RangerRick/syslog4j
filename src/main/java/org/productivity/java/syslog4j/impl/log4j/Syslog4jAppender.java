@@ -30,8 +30,8 @@ import org.apache.log4j.helpers.LogLog;
  * @version $Id: Syslog4jAppender.java,v 1.1 2008/10/30 14:25:01 cvs Exp $
  */
 public class Syslog4jAppender extends Syslog4jAppenderSkeleton {
-	private static final long serialVersionUID = -6072552977605816670L;
-	
+	private static final long serialVersionUID = 5332215232943480815L;
+
 	public String initialize() {
 		if (this.protocol == null) {
 			this.protocol = UDP;
@@ -44,7 +44,7 @@ public class Syslog4jAppender extends Syslog4jAppenderSkeleton {
 		return false;
 	}
 	
-	public void setHeader(boolean header) {
+	public void setHeader(final boolean header) {
 		LogLog.warn("Syslog4jAppender ignores the \"Header\" parameter.");
 	}
 
@@ -52,7 +52,7 @@ public class Syslog4jAppender extends Syslog4jAppenderSkeleton {
 		return this.host;
 	}
 
-	public void setSyslogHost(String host) {
+	public void setSyslogHost(final String host) {
 		this.host = host;
 	}
 }

@@ -14,8 +14,8 @@ import org.productivity.java.syslog4j.SyslogMessageModifierConfigIF;
 * @version $Id: AbstractSyslogMessageModifierConfig.java,v 1.2 2008/11/14 04:32:00 cvs Exp $
 */
 public abstract class AbstractSyslogMessageModifierConfig implements SyslogMessageModifierConfigIF {
-	private static final long serialVersionUID = 5036574188079124884L;
-	
+	private static final long serialVersionUID = -3016904905841535103L;
+
 	protected String prefix = SYSLOG_MESSAGE_MODIFIER_PREFIX_DEFAULT;
 	protected String suffix = SYSLOG_MESSAGE_MODIFIER_SUFFIX_DEFAULT;
 	
@@ -27,7 +27,7 @@ public abstract class AbstractSyslogMessageModifierConfig implements SyslogMessa
 		return this.suffix;
 	}
 
-	public void setPrefix(String prefix) {
+	public void setPrefix(final String prefix) {
 		if (prefix == null) {
 			this.prefix = "";
 			
@@ -36,7 +36,7 @@ public abstract class AbstractSyslogMessageModifierConfig implements SyslogMessa
 		}
 	}
 
-	public void setSuffix(String suffix) {
+	public void setSuffix(final String suffix) {
 		if (suffix == null) {
 			this.suffix = "";
 			

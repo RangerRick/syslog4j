@@ -21,20 +21,20 @@ public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
 	protected int downLevel = SyslogConstants.LEVEL_WARN;
 	protected int upLevel = SyslogConstants.LEVEL_WARN;
 
-	public Syslog4jBackLogHandler(String protocol) {
+	public Syslog4jBackLogHandler(final String protocol) {
 		this.syslog = Syslog.getInstance(protocol);
 	}
 	
-	public Syslog4jBackLogHandler(String protocol, boolean appendReason) {
+	public Syslog4jBackLogHandler(final String protocol, final boolean appendReason) {
 		this.syslog = Syslog.getInstance(protocol);
 		this.appendReason = appendReason;
 	}
 	
-	public Syslog4jBackLogHandler(SyslogIF syslog) {
+	public Syslog4jBackLogHandler(final SyslogIF syslog) {
 		this.syslog = syslog;
 	}
 	
-	public Syslog4jBackLogHandler(SyslogIF syslog, boolean appendReason) {
+	public Syslog4jBackLogHandler(final SyslogIF syslog, final boolean appendReason) {
 		this.syslog = syslog;
 		this.appendReason = appendReason;
 	}
@@ -43,23 +43,21 @@ public class Syslog4jBackLogHandler extends AbstractSyslogBackLogHandler {
 		// NO-OP
 	}
 
-	public void log(SyslogIF syslog, int level, String message, String reason) throws SyslogRuntimeException {
+	public void log(final SyslogIF syslog, final int level, final String message, final String reason) throws SyslogRuntimeException {
 		if (this.syslog.getProtocol().equals(syslog.getProtocol())) {
 			throw new SyslogRuntimeException("Ignoring this log entry since the backLog protocol \"" + this.syslog.getProtocol() + "\" is the same as the main protocol");
 		}
 		
-		String combinedMessage = combine(syslog,level,message,reason);
-		
-		this.syslog.log(level,combinedMessage);
+		this.syslog.log(level,combine(syslog,level,message,reason));
 	}
 
-	public void down(SyslogIF syslog, String reason) {
+	public void down(final SyslogIF syslog, final String reason) {
 		if (!this.syslog.getProtocol().equals(syslog.getProtocol())) {
 			this.syslog.log(this.downLevel,"Syslog protocol \"" + syslog.getProtocol() + "\" is down: " + reason);
 		}		
 	}
 
-	public void up(SyslogIF syslog) {
+	public void up(final SyslogIF syslog) {
 		if (!this.syslog.getProtocol().equals(syslog.getProtocol())) {
 			this.syslog.log(this.downLevel,"Syslog protocol \"" + syslog.getProtocol() + "\" is up");
 		}

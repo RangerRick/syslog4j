@@ -21,7 +21,7 @@ public class SystemErrSyslogBackLogHandler extends PrintStreamSyslogBackLogHandl
 	public SystemErrSyslogBackLogHandler() {
 		super(System.err,true);
 	}
-	public SystemErrSyslogBackLogHandler(boolean appendReason) {
+	public SystemErrSyslogBackLogHandler(final boolean appendReason) {
 		super(System.err,true,appendReason);
 	}
 }

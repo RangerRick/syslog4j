@@ -1,7 +1,9 @@
 package org.productivity.java.syslog4j;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
@@ -118,8 +120,8 @@ public class SyslogMain {
 		main(args,true);
 	}
 	
-	public static void main(String[] args, boolean shutdown) throws Exception {
-		Options options = parseOptions(args);
+	public static void main(String[] args, boolean shutdown) throws IOException {
+		final Options options = parseOptions(args);
 
 		if (options.usage != null) {
 			usage(options.usage);
@@ -153,8 +155,7 @@ public class SyslogMain {
 			}
 		}
 		
-		int level = SyslogUtility.getLevel(options.level);
-		
+		final int level = SyslogUtility.getLevel(options.level);
 		syslogConfig.setFacility(options.facility);
 		
 		if (options.message != null) {
@@ -166,26 +167,35 @@ public class SyslogMain {
 			
 		} else {
 			InputStream is = null;
+			InputStreamReader isr = null;
+			BufferedReader br = null;
 			
-			if (options.fileName != null) {
-				is = new FileInputStream(options.fileName);
-				
-			} else {
-				is = System.in;
-			}
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			
-			String line = br.readLine();
-			
-			while(line != null && line.length() > 0) {
-				if (!options.quiet) {
-					System.out.println("Sending " + options.facility + "." + options.level + " message \"" + line + "\"");
+			try {
+				if (options.fileName != null) {
+					is = new FileInputStream(options.fileName);
+					
+				} else {
+					is = System.in;
 				}
 				
-				syslog.log(level,line);
-			
-				line = br.readLine();
+				isr = new InputStreamReader(is);
+				br = new BufferedReader(isr);
+				
+				String line = br.readLine();
+				
+				while(line != null && line.length() > 0) {
+					if (!options.quiet) {
+						System.out.println("Sending " + options.facility + "." + options.level + " message \"" + line + "\"");
+					}
+					syslog.log(level,line);
+					line = br.readLine();
+				}
+			} catch (final IOException e) {
+				// log?
+			} finally {
+				for (final Closeable closeable : new Closeable[] {br, isr, is}) {
+					closeable.close();
+				}
 			}
 		}
 

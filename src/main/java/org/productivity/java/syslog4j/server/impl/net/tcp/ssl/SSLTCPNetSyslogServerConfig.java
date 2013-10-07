@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.server.impl.net.tcp.ssl;
 
+import org.productivity.java.syslog4j.server.SyslogServerIF;
 import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConfig;
 
 /**
@@ -13,7 +14,7 @@ import org.productivity.java.syslog4j.server.impl.net.tcp.TCPNetSyslogServerConf
 * @version $Id: SSLTCPNetSyslogServerConfig.java,v 1.1 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implements SSLTCPNetSyslogServerConfigIF {
-	private static final long serialVersionUID = -840102682868286462L;
+	private static final long serialVersionUID = -1286872864482809492L;
 
 	protected String keyStore = null;
 	protected String keyStorePassword = null;
@@ -25,7 +26,7 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 		return this.keyStore;
 	}
 	
-	public void setKeyStore(String keyStore) {
+	public void setKeyStore(final String keyStore) {
 		this.keyStore = keyStore;
 	}
 	
@@ -33,7 +34,7 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 		return this.keyStorePassword;
 	}
 	
-	public void setKeyStorePassword(String keyStorePassword) {
+	public void setKeyStorePassword(final String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
 	}
 
@@ -41,7 +42,7 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 		return this.trustStore;
 	}
 
-	public void setTrustStore(String trustStore) {
+	public void setTrustStore(final String trustStore) {
 		this.trustStore = trustStore;
 	}
 
@@ -49,11 +50,11 @@ public class SSLTCPNetSyslogServerConfig extends TCPNetSyslogServerConfig implem
 		return this.trustStorePassword;
 	}
 
-	public void setTrustStorePassword(String trustStorePassword) {
+	public void setTrustStorePassword(final String trustStorePassword) {
 		this.trustStorePassword = trustStorePassword;
 	}
 
-	public Class getSyslogServerClass() {
+	public Class<? extends SyslogServerIF> getSyslogServerClass() {
 		return SSLTCPNetSyslogServer.class;
 	}
 }

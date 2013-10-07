@@ -24,10 +24,10 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @version $Id: Syslog4jAppenderSkeleton.java,v 1.5 2009/06/06 19:25:23 cvs Exp $
  */
 public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implements SyslogConstants {
-	private static final long serialVersionUID = 5520555788232095628L;
+	private static final long serialVersionUID = -3767028915396332270L;
 
 	protected SyslogIF syslog = null;
-	
+
 	protected String ident = null;
 	protected String protocol = null;
 	protected String facility = null;
@@ -42,36 +42,33 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 	protected String maxShutdownWait = null;
 	protected String writeRetries = null;
 	protected String truncateMessage = null;
-	
+
 	protected boolean initialized = false;
-	
+
 	public abstract String initialize() throws SyslogRuntimeException;
-	
-	protected static boolean isTrueOrOn(String value) {
-		boolean trueOrOn = false;
-		
+
+	protected static boolean isTrueOrOn(final String value) {
 		if (value != null) {
 			if ("true".equalsIgnoreCase(value.trim()) || "on".equalsIgnoreCase(value.trim())) {
-				trueOrOn = true;
-				
+				return true;
+
 			} else if ("false".equalsIgnoreCase(value.trim()) || "off".equalsIgnoreCase(value.trim())) {
-				trueOrOn = false;
-				
+				return false;
 			} else {
 				LogLog.error("Value \"" + value + "\" not true, on, false, or off -- assuming false");
 			}
 		}
-		
-		return trueOrOn;
+
+		return false;
 	}
-	
+
 	public void _initialize() {
-		String initializedProtocol = initialize();
-		
+		final String initializedProtocol = initialize();
+
 		if (initializedProtocol != null && this.protocol == null) {
 			this.protocol = initializedProtocol;
 		}
-		
+
 		if (this.protocol != null) {
 			try {
 				this.syslog = Syslog.getInstance(this.protocol);
@@ -83,10 +80,9 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 				}
 				if (this.port != null) {
 					try {
-						int i = Integer.parseInt(this.port);
+						final int i = Integer.parseInt(this.port);
 						this.syslog.getConfig().setPort(i);
-						
-					} catch (NumberFormatException nfe) {
+					} catch (final NumberFormatException nfe) {
 						LogLog.error(nfe.toString());
 					}
 				}
@@ -101,30 +97,29 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 				}
 				if (this.maxMessageLength != null && this.maxMessageLength.length() > 0) {
 					try {
-						int i = Integer.parseInt(this.maxMessageLength.trim());
-						this.syslog.getConfig().setMaxMessageLength(i);
-						
-					} catch (NumberFormatException nfe) {
+						final int i = Integer.parseInt(this.maxMessageLength.trim());
+						this.syslog.getConfig().setMaxMessageLength(i);						
+					} catch (final NumberFormatException nfe) {
 						LogLog.error(nfe.toString());
 					}
 				}
 				if (this.syslog.getConfig() instanceof AbstractSyslogConfigIF) {
-					AbstractSyslogConfigIF abstractSyslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
-					
+					final AbstractSyslogConfigIF abstractSyslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
+
 					if (this.threaded != null && !"".equals(this.threaded.trim())) {
 						abstractSyslogConfig.setThreaded(isTrueOrOn(this.threaded));
 					}
 
 					if (this.threadLoopInterval != null && this.threadLoopInterval.length() > 0) {
 						try {
-							long l = Long.parseLong(this.threadLoopInterval.trim());
+							final long l = Long.parseLong(this.threadLoopInterval.trim());
 							abstractSyslogConfig.setThreadLoopInterval(l);
-							
-						} catch (NumberFormatException nfe) {
+
+						} catch (final NumberFormatException nfe) {
 							LogLog.error(nfe.toString());
 						}
 					}
-					
+
 					if (this.splitMessageBeginText != null) {
 						abstractSyslogConfig.setSplitMessageBeginText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageBeginText));
 					}
@@ -132,61 +127,53 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 					if (this.splitMessageEndText != null) {
 						abstractSyslogConfig.setSplitMessageEndText(SyslogUtility.getBytes(abstractSyslogConfig,this.splitMessageEndText));
 					}
-					
+
 					if (this.maxShutdownWait != null && this.maxShutdownWait.length() > 0) {
 						try {
-							int i = Integer.parseInt(this.maxShutdownWait.trim());
+							final int i = Integer.parseInt(this.maxShutdownWait.trim());
 							abstractSyslogConfig.setMaxShutdownWait(i);
-							
-						} catch (NumberFormatException nfe) {
+						} catch (final NumberFormatException nfe) {
 							LogLog.error(nfe.toString());
 						}
 					}
-					
+
 					if (this.writeRetries != null && this.writeRetries.length() > 0) {
 						try {
-							int i = Integer.parseInt(this.writeRetries.trim());
+							final int i = Integer.parseInt(this.writeRetries.trim());
 							abstractSyslogConfig.setWriteRetries(i);
-							
-						} catch (NumberFormatException nfe) {
+						} catch (final NumberFormatException nfe) {
 							LogLog.error(nfe.toString());
 						}
 					}
 				}
-				
+
 				this.initialized = true;
-				
-			} catch (SyslogRuntimeException sre) {
+			} catch (final SyslogRuntimeException sre) {
 				LogLog.error(sre.toString());
 			}
 		}
 	}
-	
+
 	public String getProtocol() {
 		return this.protocol;
 	}
 
-	public void setProtocol(String protocol) {
+	public void setProtocol(final String protocol) {
 		this.protocol = protocol;
 	}
 
-	protected void append(LoggingEvent event) {
+	protected void append(final LoggingEvent event) {
 		if (!this.initialized) {
 			_initialize();
 		}
-		
+
 		if (this.initialized) {
-			int level = event.getLevel().getSyslogEquivalent();
-			
+			final int level = event.getLevel().getSyslogEquivalent();
+
 			if (this.layout != null) {
-				String message = this.layout.format(event);
-				
-				this.syslog.log(level,message);
-				
+				this.syslog.log(level,this.layout.format(event));
 			} else {
-				String message = event.getRenderedMessage();
-				
-				this.syslog.log(level,message);
+				this.syslog.log(level,event.getRenderedMessage());
 			}
 		}
 	}
@@ -201,7 +188,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.facility;
 	}
 
-	public void setFacility(String facility) {
+	public void setFacility(final String facility) {
 		this.facility = facility;
 	}
 
@@ -209,7 +196,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.host;
 	}
 
-	public void setHost(String host) {
+	public void setHost(final String host) {
 		this.host = host;
 	}
 
@@ -217,15 +204,15 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.port;
 	}
 
-	public void setPort(String port) {
+	public void setPort(final String port) {
 		this.port = port;
 	}
-	
+
 	public String getCharSet() {
 		return this.charSet;
 	}
 
-	public void setCharSet(String charSet) {
+	public void setCharSet(final String charSet) {
 		this.charSet = charSet;
 	}
 
@@ -233,7 +220,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.ident;
 	}
 
-	public void setIdent(String ident) {
+	public void setIdent(final String ident) {
 		this.ident = ident;
 	}
 
@@ -241,7 +228,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.threaded;
 	}
 
-	public void setThreaded(String threaded) {
+	public void setThreaded(final String threaded) {
 		this.threaded = threaded;
 	}
 
@@ -253,7 +240,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.threadLoopInterval;
 	}
 
-	public void setThreadLoopInterval(String threadLoopInterval) {
+	public void setThreadLoopInterval(final String threadLoopInterval) {
 		this.threadLoopInterval = threadLoopInterval;
 	}
 
@@ -261,7 +248,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.splitMessageBeginText;
 	}
 
-	public void setSplitMessageBeginText(String splitMessageBeginText) {
+	public void setSplitMessageBeginText(final String splitMessageBeginText) {
 		this.splitMessageBeginText = splitMessageBeginText;
 	}
 
@@ -269,7 +256,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.splitMessageEndText;
 	}
 
-	public void setSplitMessageEndText(String splitMessageEndText) {
+	public void setSplitMessageEndText(final String splitMessageEndText) {
 		this.splitMessageEndText = splitMessageEndText;
 	}
 
@@ -277,7 +264,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.maxMessageLength;
 	}
 
-	public void setMaxMessageLength(String maxMessageLength) {
+	public void setMaxMessageLength(final String maxMessageLength) {
 		this.maxMessageLength = maxMessageLength;
 	}
 
@@ -285,7 +272,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.maxShutdownWait;
 	}
 
-	public void setMaxShutdownWait(String maxShutdownWait) {
+	public void setMaxShutdownWait(final String maxShutdownWait) {
 		this.maxShutdownWait = maxShutdownWait;
 	}
 
@@ -293,7 +280,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.writeRetries;
 	}
 
-	public void setWriteRetries(String writeRetries) {
+	public void setWriteRetries(final String writeRetries) {
 		this.writeRetries = writeRetries;
 	}
 
@@ -301,7 +288,7 @@ public abstract class Syslog4jAppenderSkeleton extends AppenderSkeleton implemen
 		return this.truncateMessage;
 	}
 
-	public void setTruncateMessage(String truncateMessage) {
+	public void setTruncateMessage(final String truncateMessage) {
 		this.truncateMessage = truncateMessage;
 	}
 }

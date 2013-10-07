@@ -11,82 +11,77 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslog;
 
 /**
-* UDPNetSyslog is an extension of AbstractSyslog that provides support for
-* UDP/IP-based syslog clients.
-* 
-* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
-* of the LGPL license is available in the META-INF folder in all
-* distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
-* @author &lt;syslog4j@productivity.org&gt;
-* @version $Id: UDPNetSyslog.java,v 1.16 2009/07/22 15:54:23 cvs Exp $
-*/
+ * UDPNetSyslog is an extension of AbstractSyslog that provides support for
+ * UDP/IP-based syslog clients.
+ * 
+ * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+ * of the LGPL license is available in the META-INF folder in all
+ * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
+ * 
+ * @author &lt;syslog4j@productivity.org&gt;
+ * @version $Id: UDPNetSyslog.java,v 1.16 2009/07/22 15:54:23 cvs Exp $
+ */
 public class UDPNetSyslog extends AbstractNetSyslog {
-	private static final long serialVersionUID = 5259485504549037999L;
-	
+	private static final long serialVersionUID = -4876719944475302457L;
+
 	protected DatagramSocket socket = null;
-	
+
 	public void initialize() throws SyslogRuntimeException {
 		super.initialize();
-		
 		createDatagramSocket(true);
 	}
-	
-	protected synchronized void createDatagramSocket(boolean initialize) {
+
+	protected synchronized void createDatagramSocket(final boolean initialize) {
 		try {
 			this.socket = new DatagramSocket();
-			
-		} catch (SocketException se) {
+		} catch (final SocketException se) {
 			if (initialize) {
 				if (this.syslogConfig.isThrowExceptionOnInitialize()) {
 					throw new SyslogRuntimeException(se);
 				}
-				
 			} else {
 				throw new SyslogRuntimeException(se);
 			}
 		}
-		
+
 		if (this.socket == null) {
 			throw new SyslogRuntimeException("Cannot seem to get a Datagram socket");
 		}
 	}
 
-	protected void write(byte[] message) throws SyslogRuntimeException {
-    	if (this.socket == null) {
-   			createDatagramSocket(false);
-    	}
-    	
-		InetAddress hostAddress = getHostAddress();
-		
-        DatagramPacket packet = new DatagramPacket(
-        	message,
-        	message.length,
-        	hostAddress,
-        	this.syslogConfig.getPort()
-        );
+	protected void write(final byte[] message) throws SyslogRuntimeException {
+		if (this.socket == null) {
+			createDatagramSocket(false);
+		}
 
-        int attempts = 0;
-        
-        while(attempts != -1 && attempts < (this.netSyslogConfig.getWriteRetries() + 1)) {
-	        try {
-	        	this.socket.send(packet);
-	        	attempts = -1;
-	        	
-	        } catch (IOException ioe) {
-	        	if (attempts == (this.netSyslogConfig.getWriteRetries() + 1)) {
-	        		throw new SyslogRuntimeException(ioe);
-	        	}
-	        }
-        }
+		final InetAddress hostAddress = getHostAddress();
+
+		final DatagramPacket packet = new DatagramPacket(
+				message,
+				message.length,
+				hostAddress,
+				this.syslogConfig.getPort()
+				);
+
+		int attempts = 0;
+
+		while(attempts != -1 && attempts < (this.netSyslogConfig.getWriteRetries() + 1)) {
+			try {
+				this.socket.send(packet);
+				attempts = -1;
+			} catch (final IOException ioe) {
+				if (attempts == (this.netSyslogConfig.getWriteRetries() + 1)) {
+					throw new SyslogRuntimeException(ioe);
+				}
+			}
+		}
 	}
 
 	public void flush() throws SyslogRuntimeException {
 		shutdown();
-		
 		createDatagramSocket(true);
 	}
-	
+
 	public void shutdown() throws SyslogRuntimeException {
 		this.socket.close();
 		this.socket = null;
@@ -96,7 +91,7 @@ public class UDPNetSyslog extends AbstractNetSyslog {
 		return null;
 	}
 
-	public void returnWriter(AbstractSyslogWriter syslogWriter) {
+	public void returnWriter(final AbstractSyslogWriter syslogWriter) {
 		//
 	}
 }

@@ -33,8 +33,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
  * @version $Id: StructuredSyslogMessageProcessor.java,v 1.1 2009/07/22 15:54:23 cvs Exp $
  */
 public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProcessor {
-	private static final long serialVersionUID = -1563777226913475257L;
-	
+		private static final long serialVersionUID = 1977939903999661896L;
+
 	public static String VERSION = "1";
 
 	private static final SyslogMessageProcessorIF INSTANCE = new StructuredSyslogMessageProcessor();
@@ -43,7 +43,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
 	private String applicationName = STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
 	private String processId = STRUCTURED_DATA_PROCESS_ID_DEFAULT_VALUE;
 
-	public static void setDefault(SyslogMessageProcessorIF messageProcessor) {
+	public static void setDefault(final SyslogMessageProcessorIF messageProcessor) {
 		if (messageProcessor != null) {
 			defaultInstance = messageProcessor;
 		}
@@ -66,7 +66,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
 		return this.applicationName;
 	}
 
-	public void setApplicationName(String applicationName) {
+	public void setApplicationName(final String applicationName) {
 		this.applicationName = applicationName;
 	}
 
@@ -74,7 +74,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
 		return this.processId;
 	}
 
-	public void setProcessId(String processId) {
+	public void setProcessId(final String processId) {
 		this.processId = processId;
 	}
 
@@ -89,8 +89,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
 		buffer.append(VERSION);
 		buffer.append(' ');
 
-		final SimpleDateFormat dateFormat = new SimpleDateFormat(
-				STRUCTURED_DATA_MESSAGE_DATEFORMAT, Locale.ENGLISH);
+		final SimpleDateFormat dateFormat = new SimpleDateFormat(STRUCTURED_DATA_MESSAGE_DATEFORMAT, Locale.ENGLISH);
 
 		// ISO standard requires a colon in the timezone
 		final String datePrefix = dateFormat.format(new Date());
@@ -104,9 +103,7 @@ public class StructuredSyslogMessageProcessor extends AbstractSyslogMessageProce
 		buffer.append(localName);
 		buffer.append(' ');
 
-		buffer.append(StructuredSyslogMessage.nilProtect(this.applicationName))
-				.append(' ');
-
+		buffer.append(StructuredSyslogMessage.nilProtect(this.applicationName)).append(' ');
 		buffer.append(StructuredSyslogMessage.nilProtect(this.processId)).append(' ');
 		
 		return buffer.toString();

@@ -29,12 +29,12 @@ import org.productivity.java.syslog4j.server.impl.event.SyslogServerEvent;
  * @version $Id: StructuredSyslogServerEvent.java,v 1.2 2009/07/25 18:42:47 cvs Exp $
  */
 public class StructuredSyslogServerEvent extends SyslogServerEvent {
-	private static final long serialVersionUID = 1676499796406044315L;
+	private static final long serialVersionUID = -8454350028465662575L;
 
 	private String applicationName = SyslogConstants.STRUCTURED_DATA_APP_NAME_DEFAULT_VALUE;
 	private String processId = null;
 
-	public StructuredSyslogServerEvent(byte[] message, int length, InetAddress inetAddress) {
+	public StructuredSyslogServerEvent(final byte[] message, final int length, final InetAddress inetAddress) {
 		super(message, length, inetAddress);
 	}
 
@@ -73,16 +73,13 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
 		i = this.message.indexOf(' ');
 
 		if (i > -1) {
-			String dateString = this.message.substring(0, i).trim();
+			final String dateString = this.message.substring(0, i).trim();
 
 			if (dateString.length() == 25 && dateString.lastIndexOf(':') == 22) {
 				// Remove the colon from the timezone so it can be parsed by the
 				// parser
-				String finalDateStr = dateString.substring(0, 22)
-						+ dateString.substring(23, 25);
-
-				DateFormat dateFormat = new SimpleDateFormat(
-						SyslogConstants.STRUCTURED_DATA_MESSAGE_DATEFORMAT);
+				final String finalDateStr = dateString.substring(0, 22) + dateString.substring(23, 25);
+				final DateFormat dateFormat = new SimpleDateFormat(SyslogConstants.STRUCTURED_DATA_MESSAGE_DATEFORMAT);
 				try {
 					this.date = dateFormat.parse(finalDateStr);
 				} catch (ParseException pe) {
@@ -90,7 +87,7 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
 				}
 
 				this.message = this.message.substring(i + 1);
-				
+
 			} else {
 				// Not structured date format, try super one
 				super.parseDate();
@@ -102,7 +99,7 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
 	}
 
 	protected void parseHost() {
-		int i = this.message.indexOf(' ');
+		final int i = this.message.indexOf(' ');
 
 		if (i > -1) {
 			this.host = this.message.substring(0, i).trim();
@@ -127,8 +124,7 @@ public class StructuredSyslogServerEvent extends SyslogServerEvent {
 	public StructuredSyslogMessage getStructuredMessage() {
 		try {
 			return StructuredSyslogMessage.fromString(getMessage());
-
-		} catch (IllegalArgumentException e) {
+		} catch (final IllegalArgumentException e) {
 			// throw new SyslogRuntimeException(
 			// "Message received is not a valid structured message: "
 			// + getMessage(), e);

@@ -18,7 +18,7 @@ import org.productivity.java.syslog4j.SyslogRuntimeException;
 * @version $Id: SyslogServerConfigIF.java,v 1.9 2009/07/22 15:54:23 cvs Exp $
 */
 public interface SyslogServerConfigIF extends SyslogConstants, SyslogCharSetIF {
-	public Class getSyslogServerClass();
+	public Class<? extends SyslogServerIF> getSyslogServerClass();
 
 	public String getHost();
 	public void setHost(String host) throws SyslogRuntimeException;
@@ -26,7 +26,7 @@ public interface SyslogServerConfigIF extends SyslogConstants, SyslogCharSetIF {
 	public int getPort();
 	public void setPort(int port) throws SyslogRuntimeException;
 	
-	public List getEventHandlers();
+	public List<SyslogServerEventHandlerIF> getEventHandlers();
 	
 	public int getShutdownWait();
 	public void setShutdownWait(int shutdownWait);

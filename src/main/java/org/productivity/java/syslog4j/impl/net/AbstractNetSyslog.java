@@ -18,8 +18,8 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: AbstractNetSyslog.java,v 1.7 2009/01/24 22:00:18 cvs Exp $
 */
 public abstract class AbstractNetSyslog extends AbstractSyslog {
-	private static final long serialVersionUID = -3250858945515853967L;
-	
+	private static final long serialVersionUID = -376333424326636770L;
+
 	protected static final Object cachedHostAddressSyncObject = new Object();
 	
 	protected InetAddress cachedHostAddress = null;
@@ -30,7 +30,7 @@ public abstract class AbstractNetSyslog extends AbstractSyslog {
 		try {
 			this.netSyslogConfig = (AbstractNetSyslogConfigIF) this.syslogConfig;
 			
-		} catch (ClassCastException cce) {
+		} catch (final ClassCastException cce) {
 			throw new SyslogRuntimeException("config must implement interface AbstractNetSyslogConfigIF");
 		}
 	}
@@ -39,8 +39,6 @@ public abstract class AbstractNetSyslog extends AbstractSyslog {
 	 * @return Returns an object of InetAddress of the local host, using caching if so directed.
 	 */
 	public InetAddress getHostAddress() {
-		InetAddress hostAddress = null;
-		
 		if (this.netSyslogConfig.isCacheHostAddress()) {
 			if (this.cachedHostAddress == null) {
 				synchronized(cachedHostAddressSyncObject) {
@@ -49,13 +47,11 @@ public abstract class AbstractNetSyslog extends AbstractSyslog {
 					}
 				}
 			}
-			
-			hostAddress = this.cachedHostAddress;
+
+			return this.cachedHostAddress;
 			
 		} else {
-			hostAddress = SyslogUtility.getInetAddress(this.syslogConfig.getHost());
+			return SyslogUtility.getInetAddress(this.syslogConfig.getHost());
 		}
-		
-		return hostAddress;
 	}
 }

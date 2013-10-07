@@ -1,5 +1,6 @@
 package org.productivity.java.syslog4j.impl.unix.socket;
 
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 
@@ -15,7 +16,7 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogConfig;
 * @version $Id: UnixSocketSyslogConfig.java,v 1.6 2009/07/22 15:54:23 cvs Exp $
 */
 public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
-	private static final long serialVersionUID = -3145794243736015707L;
+	private static final long serialVersionUID = 2493637042613820478L;
 
 	protected int type = SOCK_DGRAM; 
 	protected short family = AF_UNIX;
@@ -29,20 +30,20 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		this.setIdent("java");
 	}
 	
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return UnixSocketSyslog.class;
 	}
 
-	public UnixSocketSyslogConfig(int facility) {
+	public UnixSocketSyslogConfig(final int facility) {
 		this.facility = facility;
 	}
 
-	public UnixSocketSyslogConfig(int facility, String path) {
+	public UnixSocketSyslogConfig(final int facility, final String path) {
 		this.facility = facility;
 		this.path = path;
 	}
 
-	public UnixSocketSyslogConfig(String path) {
+	public UnixSocketSyslogConfig(final String path) {
 		this.path = path;
 	}
 
@@ -54,11 +55,11 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return -1;
 	}
 
-	public void setHost(String host) throws SyslogRuntimeException {
+	public void setHost(final String host) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("Host not appropriate for class \"" + this.getClass().getName() + "\"");
 	}
 
-	public void setPort(int port) throws SyslogRuntimeException {
+	public void setPort(final int port) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("Port not appropriate for class \"" + this.getClass().getName() + "\"");
 	}
 
@@ -66,7 +67,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return this.library;
 	}
 
-	public void setLibrary(String library) {
+	public void setLibrary(final String library) {
 		this.library = library;
 	}
 
@@ -74,7 +75,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return this.path;
 	}
 
-	public void setPath(String path) {
+	public void setPath(final String path) {
 		this.path = path;
 	}
 	
@@ -82,11 +83,11 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return this.type;
 	}
 	
-	public void setType(int type) {
+	public void setType(final int type) {
 		this.type = type;
 	}
 	
-	public void setType(String type) {
+	public void setType(final String type) {
 		if (type == null) {
 			throw new SyslogRuntimeException("Type cannot be null for class \"" + this.getClass().getName() + "\"");
 		}
@@ -106,11 +107,11 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return this.family;
 	}
 
-	public void setFamily(short family) {
+	public void setFamily(final short family) {
 		this.family = family;
 	}
 
-	public void setFamily(String family) {
+	public void setFamily(final String family) {
 		if (family == null) {
 			throw new SyslogRuntimeException("Family cannot be null for class \"" + this.getClass().getName() + "\"");
 		}
@@ -127,7 +128,7 @@ public class UnixSocketSyslogConfig extends AbstractSyslogConfig {
 		return this.protocol;
 	}
 
-	public void setProtocol(int protocol) {
+	public void setProtocol(final int protocol) {
 		this.protocol = protocol;
 	}
 }

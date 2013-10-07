@@ -7,23 +7,20 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class FileSyslogServerEventHandler extends PrintStreamSyslogServerEventHandler {
-	private static final long serialVersionUID = -755824686809731430L;
+	private static final long serialVersionUID = 979941585808969449L;
 
-	protected static PrintStream createPrintStream(String fileName, boolean append) throws IOException {
-		File file = new File(fileName);
-		
-		OutputStream os = new FileOutputStream(file,append);
-		
-		PrintStream printStream = new PrintStream(os);
-		
+	protected static PrintStream createPrintStream(final String fileName, final boolean append) throws IOException {
+		final File file = new File(fileName);
+		final OutputStream os = new FileOutputStream(file,append);
+		final PrintStream printStream = new PrintStream(os);
 		return printStream;
 	}
 	
-	public FileSyslogServerEventHandler(String fileName) throws IOException {
+	public FileSyslogServerEventHandler(final String fileName) throws IOException {
 		super(createPrintStream(fileName,true));		
 	}
 	
-	public FileSyslogServerEventHandler(String fileName, boolean append) throws IOException {
+	public FileSyslogServerEventHandler(final String fileName, final boolean append) throws IOException {
 		super(createPrintStream(fileName,append));
 	}
 }

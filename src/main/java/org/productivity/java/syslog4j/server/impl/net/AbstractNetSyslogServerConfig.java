@@ -14,8 +14,8 @@ import org.productivity.java.syslog4j.server.impl.AbstractSyslogServerConfig;
 * @version $Id: AbstractNetSyslogServerConfig.java,v 1.4 2008/11/07 15:15:41 cvs Exp $
 */
 public abstract class AbstractNetSyslogServerConfig extends AbstractSyslogServerConfig {
-	private static final long serialVersionUID = -3363374941938350263L;
-	
+	private static final long serialVersionUID = 2450777531134821687L;
+
 	protected String host = null;
 	protected int port = SYSLOG_PORT_DEFAULT;
 	
@@ -23,7 +23,7 @@ public abstract class AbstractNetSyslogServerConfig extends AbstractSyslogServer
 		return this.host;
 	}
 
-	public void setHost(String host) {
+	public void setHost(final String host) {
 		this.host = host;
 	}
 
@@ -31,7 +31,7 @@ public abstract class AbstractNetSyslogServerConfig extends AbstractSyslogServer
 		return this.port;
 	}
 
-	public void setPort(int port) {
+	public void setPort(final int port) {
 		this.port = port;
 	}
 }

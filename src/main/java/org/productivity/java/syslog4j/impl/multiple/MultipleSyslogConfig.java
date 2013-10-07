@@ -6,64 +6,64 @@ import java.util.List;
 import org.productivity.java.syslog4j.SyslogBackLogHandlerIF;
 import org.productivity.java.syslog4j.SyslogConfigIF;
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogMessageModifierIF;
 import org.productivity.java.syslog4j.SyslogRuntimeException;
 
 /**
-* MultipleSyslogConfig is a configuration Object for allowing a single
-* Syslog call to send to multiple Syslog implementations.
-* 
-* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
-* of the LGPL license is available in the META-INF folder in all
-* distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
-* @author &lt;syslog4j@productivity.org&gt;
-* @version $Id: MultipleSyslogConfig.java,v 1.7 2009/07/22 15:54:23 cvs Exp $
-*/
+ * MultipleSyslogConfig is a configuration Object for allowing a single
+ * Syslog call to send to multiple Syslog implementations.
+ * 
+ * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+ * of the LGPL license is available in the META-INF folder in all
+ * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
+ * 
+ * @author &lt;syslog4j@productivity.org&gt;
+ * @version $Id: MultipleSyslogConfig.java,v 1.7 2009/07/22 15:54:23 cvs Exp $
+ */
 public class MultipleSyslogConfig implements SyslogConfigIF {
-	private static final long serialVersionUID = 753704522364959612L;
-	
-	protected List syslogProtocols = null;
-	
+	private static final long serialVersionUID = 4629036421093131756L;
+	protected List<String> syslogProtocols = null;
+
 	public MultipleSyslogConfig() {
-		this.syslogProtocols = new ArrayList();
+		this.syslogProtocols = new ArrayList<String>();
 	}
 
-	public MultipleSyslogConfig(List protocols) {
+	public MultipleSyslogConfig(final List<String> protocols) {
 		if (protocols != null) {
 			this.syslogProtocols = protocols;
-			
+
 		} else {
-			this.syslogProtocols = new ArrayList();
+			this.syslogProtocols = new ArrayList<String>();
 		}
 	}
 
-	public MultipleSyslogConfig(String[] protocols) {
+	public MultipleSyslogConfig(final String[] protocols) {
 		if (protocols != null) {
-			this.syslogProtocols = new ArrayList(protocols.length);
-			
+			this.syslogProtocols = new ArrayList<String>(protocols.length);
+
 			for(int i=0; i<protocols.length; i++) {
 				this.syslogProtocols.add(protocols[i]);
 			}
-			
+
 		} else {
-			this.syslogProtocols = new ArrayList();
+			this.syslogProtocols = new ArrayList<String>();
 		}
 	}
-	
-	public List getProtocols() {
+
+	public List<String> getProtocols() {
 		return this.syslogProtocols;
 	}
 
-	public void addProtocol(String protocol) {
+	public void addProtocol(final String protocol) {
 		this.syslogProtocols.add(protocol);
 	}
 
-	public void insertProtocol(int index, String protocol) {
+	public void insertProtocol(final int index, final String protocol) {
 		this.syslogProtocols.add(index,protocol);
 	}
 
-	public void removeProtocol(String protocol) {
+	public void removeProtocol(final String protocol) {
 		this.syslogProtocols.remove(protocol);
 	}
 
@@ -71,15 +71,15 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		this.syslogProtocols.clear();
 	}
 
-	public void addBackLogHandler(SyslogBackLogHandlerIF backLogHandler) {
+	public void addBackLogHandler(final SyslogBackLogHandlerIF backLogHandler) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void addMessageModifier(SyslogMessageModifierIF messageModifier) {
+	public void addMessageModifier(final SyslogMessageModifierIF messageModifier) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return MultipleSyslog.class;
 	}
 
@@ -102,20 +102,20 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 	public int getPort() {
 		return SyslogConstants.SYSLOG_PORT_DEFAULT;
 	}
-	
+
 	public int getMaxShutdownWait() {
 		return SyslogConstants.MAX_SHUTDOWN_WAIT_DEFAULT;
 	}
 
-	public void setMaxShutdownWait(int maxShutdownWait) {
+	public void setMaxShutdownWait(final int maxShutdownWait) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void insertBackLogHandler(int index, SyslogBackLogHandlerIF backLogHandler) {
+	public void insertBackLogHandler(final int index, final SyslogBackLogHandlerIF backLogHandler) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void insertMessageModifier(int index, SyslogMessageModifierIF messageModifier) {
+	public void insertMessageModifier(final int index, final SyslogMessageModifierIF messageModifier) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
@@ -151,59 +151,59 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void removeBackLogHandler(SyslogBackLogHandlerIF backLogHandler) {
+	public void removeBackLogHandler(final SyslogBackLogHandlerIF backLogHandler) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void removeMessageModifier(SyslogMessageModifierIF messageModifier) {
+	public void removeMessageModifier(final SyslogMessageModifierIF messageModifier) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setCacheHostAddress(boolean cacheHostAddress) {
+	public void setCacheHostAddress(final boolean cacheHostAddress) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setCharSet(String charSet) {
+	public void setCharSet(final String charSet) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setFacility(int facility) {
+	public void setFacility(final int facility) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setFacility(String facilityName) {
+	public void setFacility(final String facilityName) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setHost(String host) throws SyslogRuntimeException {
+	public void setHost(final String host) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setIdent(String ident) {
+	public void setIdent(final String ident) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setIncludeIdentInMessageModifier(boolean throwExceptionOnInitialize) {
+	public void setIncludeIdentInMessageModifier(final boolean throwExceptionOnInitialize) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setPort(int port) throws SyslogRuntimeException {
+	public void setPort(final int port) throws SyslogRuntimeException {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setSendLocalName(boolean sendLocalName) {
+	public void setSendLocalName(final boolean sendLocalName) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setSendLocalTimestamp(boolean sendLocalTimestamp) {
+	public void setSendLocalTimestamp(final boolean sendLocalTimestamp) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setThrowExceptionOnInitialize(boolean throwExceptionOnInitialize) {
+	public void setThrowExceptionOnInitialize(final boolean throwExceptionOnInitialize) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
-	public void setThrowExceptionOnWrite(boolean throwExceptionOnWrite) {
+	public void setThrowExceptionOnWrite(final boolean throwExceptionOnWrite) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
@@ -211,7 +211,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		return SyslogConstants.MAX_MESSAGE_LENGTH_DEFAULT;
 	}
 
-	public void setMaxMessageLength(int maxMessageLength) {
+	public void setMaxMessageLength(final int maxMessageLength) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
@@ -219,7 +219,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		return SyslogConstants.TRUNCATE_MESSAGE_DEFAULT;
 	}
 
-	public void setTruncateMessage(boolean truncateMessage) {
+	public void setTruncateMessage(final boolean truncateMessage) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 
@@ -227,7 +227,7 @@ public class MultipleSyslogConfig implements SyslogConfigIF {
 		return SyslogConstants.USE_STRUCTURED_DATA_DEFAULT;
 	}
 
-	public void setUseStructuredData(boolean useStructuredData) {
+	public void setUseStructuredData(final boolean useStructuredData) {
 		throw new SyslogRuntimeException("MultipleSyslog is an aggregator; please set the individual protocols");
 	}
 }

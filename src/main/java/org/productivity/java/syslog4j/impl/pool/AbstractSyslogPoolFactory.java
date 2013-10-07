@@ -20,8 +20,6 @@ import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 * @see org.productivity.java.syslog4j.impl.pool.generic.GenericSyslogPoolFactory
 */
 public abstract class AbstractSyslogPoolFactory extends BasePoolableObjectFactory {
-	private static final long serialVersionUID = -7441569603980981508L;
-	
 	protected AbstractSyslog syslog = null;
 	protected AbstractSyslogConfigIF syslogConfig = null;
 	
@@ -31,13 +29,12 @@ public abstract class AbstractSyslogPoolFactory extends BasePoolableObjectFactor
 		//
 	}
 
-	public void initialize(AbstractSyslog abstractSyslog) throws SyslogRuntimeException {
+	public void initialize(final AbstractSyslog abstractSyslog) throws SyslogRuntimeException {
 		this.syslog = abstractSyslog;
 		
 		try {
 			this.syslogConfig = (AbstractSyslogConfigIF) this.syslog.getConfig();
-
-		} catch (ClassCastException cce) {
+		} catch (final ClassCastException cce) {
 			throw new SyslogRuntimeException("config must implement AbstractSyslogConfigIF");
 		}
 		
@@ -45,7 +42,7 @@ public abstract class AbstractSyslogPoolFactory extends BasePoolableObjectFactor
 	}
 
 	public Object makeObject() throws Exception {
-		AbstractSyslogWriter syslogWriter = this.syslog.createWriter();
+		final AbstractSyslogWriter syslogWriter = this.syslog.createWriter();
 		
 		if (this.syslogConfig.isThreaded()) {
 			this.syslog.createWriterThread(syslogWriter);
@@ -54,23 +51,22 @@ public abstract class AbstractSyslogPoolFactory extends BasePoolableObjectFactor
 		return syslogWriter;
 	}
 
-	public void destroyObject(Object obj) throws Exception {
-		AbstractSyslogWriter writer = (AbstractSyslogWriter) obj;
-
-		writer.shutdown();
-		
-		super.destroyObject(writer);
+	public void destroyObject(final Object obj) throws Exception {
+		final AbstractSyslogWriter writer = (AbstractSyslogWriter) obj;
+		try {
+			writer.shutdown();
+		} finally {
+			super.destroyObject(writer);
+		}
 	}
 	
 	public abstract ObjectPool createPool() throws SyslogRuntimeException;
 	
 	public AbstractSyslogWriter borrowSyslogWriter() throws Exception {
-		AbstractSyslogWriter syslogWriter = (AbstractSyslogWriter) this.pool.borrowObject();
-		
-		return syslogWriter;
+		return (AbstractSyslogWriter) this.pool.borrowObject();
 	}
 
-	public void returnSyslogWriter(AbstractSyslogWriter syslogWriter) throws Exception {
+	public void returnSyslogWriter(final AbstractSyslogWriter syslogWriter) throws Exception {
 		this.pool.returnObject(syslogWriter);
 	}
 

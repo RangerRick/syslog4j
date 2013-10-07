@@ -19,18 +19,18 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 public abstract class AbstractSyslogBackLogHandler implements SyslogBackLogHandlerIF {
 	protected boolean appendReason = true;
 
-	protected String combine(SyslogIF syslog, int level, String message, String reason) {
+	protected String combine(final SyslogIF syslog, final int level, final String message, final String reason) {
 		// Note: syslog is explicitly ignored by default
 		
-		String _message = message != null ? message : "UNKNOWN";
-		String _reason = reason != null ? reason : "UNKNOWN";
+		final String _message = message != null ? message : "UNKNOWN";
+		final String _reason = reason != null ? reason : "UNKNOWN";
 		
-		String combinedMessage = SyslogUtility.getLevelString(level) + " " + _message;
+		final String combinedMessage = SyslogUtility.getLevelString(level) + " " + _message;
 		
 		if (this.appendReason) {
-			combinedMessage += " [" + _reason + "]";
+			return combinedMessage + " [" + _reason + "]";
+		} else {
+			return combinedMessage;
 		}
-		
-		return combinedMessage;
 	}
 }

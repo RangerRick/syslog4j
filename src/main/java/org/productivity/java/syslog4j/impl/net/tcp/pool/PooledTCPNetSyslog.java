@@ -18,40 +18,31 @@ import org.productivity.java.syslog4j.impl.pool.generic.GenericSyslogPoolFactory
 * @version $Id: PooledTCPNetSyslog.java,v 1.5 2008/12/10 04:30:15 cvs Exp $
 */
 public class PooledTCPNetSyslog extends TCPNetSyslog {
-	private static final long serialVersionUID = 4279960451141784200L;
-	
+	private static final long serialVersionUID = -7326179264489675177L;
 	protected AbstractSyslogPoolFactory poolFactory = null;
 
 	public void initialize() throws SyslogRuntimeException {
 		super.initialize();
-		
 		this.poolFactory = createSyslogPoolFactory();
-		
 		this.poolFactory.initialize(this);
 	}
 	
 	protected AbstractSyslogPoolFactory createSyslogPoolFactory() {
-		AbstractSyslogPoolFactory syslogPoolFactory = new GenericSyslogPoolFactory();
-		
-		return syslogPoolFactory;
+		return new GenericSyslogPoolFactory();
 	}
 
 	public AbstractSyslogWriter getWriter() {
 		try {
-			AbstractSyslogWriter syslogWriter = this.poolFactory.borrowSyslogWriter();
-		
-			return syslogWriter;
-			
-		} catch (Exception e) {
+			return this.poolFactory.borrowSyslogWriter();
+		} catch (final Exception e) {
 			throw new SyslogRuntimeException(e);
 		}
 	}
 
-	public void returnWriter(AbstractSyslogWriter syslogWriter) {
+	public void returnWriter(final AbstractSyslogWriter syslogWriter) {
 		try {
 			this.poolFactory.returnSyslogWriter(syslogWriter);
-			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			throw new SyslogRuntimeException(e);
 		}
 	}
@@ -59,8 +50,7 @@ public class PooledTCPNetSyslog extends TCPNetSyslog {
 	public void flush() throws SyslogRuntimeException {
 		try {
 			this.poolFactory.clear();
-			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			//
 		}
 	}
@@ -69,7 +59,7 @@ public class PooledTCPNetSyslog extends TCPNetSyslog {
 		try {
 			this.poolFactory.close();
 			
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			//
 		}
 	}

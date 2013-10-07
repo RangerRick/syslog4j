@@ -1,5 +1,7 @@
 package org.productivity.java.syslog4j.impl.net.tcp.ssl;
 
+import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 
 /**
@@ -14,7 +16,7 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 * @version $Id: SSLTCPNetSyslogConfig.java,v 1.2 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPNetSyslogConfigIF {
-	private static final long serialVersionUID = 5569086213824510834L;
+	private static final long serialVersionUID = 6001844396747217433L;
 
 	protected String keyStore = null;
 	protected String keyStorePassword = null;
@@ -23,26 +25,25 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 	protected String trustStorePassword = null;
 
 	public SSLTCPNetSyslogConfig() {
-		//
 	}
 
-	public SSLTCPNetSyslogConfig(int facility, String host, int port) {
+	public SSLTCPNetSyslogConfig(final int facility, final String host, final int port) {
 		super(facility, host, port);
 	}
 
-	public SSLTCPNetSyslogConfig(int facility, String host) {
+	public SSLTCPNetSyslogConfig(final int facility, final String host) {
 		super(facility, host);
 	}
 
-	public SSLTCPNetSyslogConfig(int facility) {
+	public SSLTCPNetSyslogConfig(final int facility) {
 		super(facility);
 	}
 
-	public SSLTCPNetSyslogConfig(String host, int port) {
+	public SSLTCPNetSyslogConfig(final String host, final int port) {
 		super(host, port);
 	}
 
-	public SSLTCPNetSyslogConfig(String host) {
+	public SSLTCPNetSyslogConfig(final String host) {
 		super(host);
 	}
 	
@@ -50,7 +51,7 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 		return this.keyStore;
 	}
 	
-	public void setKeyStore(String keyStore) {
+	public void setKeyStore(final String keyStore) {
 		this.keyStore = keyStore;
 	}
 	
@@ -58,7 +59,7 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 		return this.keyStorePassword;
 	}
 	
-	public void setKeyStorePassword(String keyStorePassword) {
+	public void setKeyStorePassword(final String keyStorePassword) {
 		this.keyStorePassword = keyStorePassword;
 	}
 
@@ -66,7 +67,7 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 		return this.trustStore;
 	}
 
-	public void setTrustStore(String trustStore) {
+	public void setTrustStore(final String trustStore) {
 		this.trustStore = trustStore;
 	}
 
@@ -74,15 +75,15 @@ public class SSLTCPNetSyslogConfig extends TCPNetSyslogConfig implements SSLTCPN
 		return this.trustStorePassword;
 	}
 
-	public void setTrustStorePassword(String trustStorePassword) {
+	public void setTrustStorePassword(final String trustStorePassword) {
 		this.trustStorePassword = trustStorePassword;
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return SSLTCPNetSyslog.class;
 	}
 
-	public Class getSyslogWriterClass() {
+	public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
 		return SSLTCPNetSyslogWriter.class;
 	}
 }

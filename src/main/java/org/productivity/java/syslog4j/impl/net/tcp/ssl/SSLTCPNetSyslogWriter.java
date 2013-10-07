@@ -20,7 +20,7 @@ import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogWriter;
 * @version $Id: SSLTCPNetSyslogWriter.java,v 1.4 2009/03/29 17:38:58 cvs Exp $
 */
 public class SSLTCPNetSyslogWriter extends TCPNetSyslogWriter {
-	private static final long serialVersionUID = 8944446235285662244L;
+	private static final long serialVersionUID = 535920267677121552L;
 
 	protected SocketFactory obtainSocketFactory() {
 		return SSLSocketFactory.getDefault();

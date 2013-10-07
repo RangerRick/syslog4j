@@ -19,15 +19,15 @@ public class NullSyslogBackLogHandler implements SyslogBackLogHandlerIF {
 		//
 	}
 
-	public void down(SyslogIF syslog, String reason) {
+	public void down(final SyslogIF syslog, final String reason) {
 		//
 	}
 
-	public void up(SyslogIF syslog) {
+	public void up(final SyslogIF syslog) {
 		//
 	}
 
-	public void log(SyslogIF syslog, int level, String message, String reason) {
+	public void log(final SyslogIF syslog, final int level, final String message, final String reason) {
 		//
 	}
 }

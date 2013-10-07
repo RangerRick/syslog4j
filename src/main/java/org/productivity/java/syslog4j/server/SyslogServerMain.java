@@ -20,19 +20,19 @@ public class SyslogServerMain {
 		public String fileName = null;
 		public boolean append = false;
 		public boolean quiet = false;
-		
+
 		public String host = null;
 		public String port = null;
-		
+
 		public String usage = null;
 	}
-	
-	public static void usage(String problem) {
+
+	public static void usage(final String problem) {
 		if (problem != null) {
 			System.out.println("Error: " + problem);
 			System.out.println();
 		}
-		
+
 		System.out.println("Usage:");
 		System.out.println();
 		System.out.println("SyslogServer -h <host> -p <port> -o <file> -a -q <protocol>");
@@ -46,66 +46,65 @@ public class SyslogServerMain {
 		System.out.println();
 		System.out.println("protocol     Syslog4j protocol implementation");
 	}
-	
-	public static Options parseOptions(String[] args) {
-		Options options = new Options();
-	
+
+	public static Options parseOptions(final String[] args) {
+		final Options options = new Options();
+
 		int i = 0;
 		while(i < args.length) {
-			String arg = args[i++];
+			final String arg = args[i++];
 			boolean match = false;
-			
+
 			if ("-h".equals(arg)) { if (i == args.length) { options.usage = "Must specify host with -h"; return options; } match = true; options.host = args[i++]; }
 			if ("-p".equals(arg)) { if (i == args.length) { options.usage = "Must specify port with -p"; return options; } match = true; options.port = args[i++]; }
 			if ("-o".equals(arg)) { if (i == args.length) { options.usage = "Must specify file with -o"; return options; } match = true; options.fileName = args[i++]; }
-			
+
 			if ("-a".equals(arg)) { match = true; options.append = true; }
 			if ("-q".equals(arg)) { match = true; options.quiet = true; }
-			
+
 			if (!match) {
 				if (options.protocol != null) {
 					options.usage = "Only one protocol definition allowed";
 					return options;
 				}
-				
+
 				options.protocol = arg;
 			}
 		}
-		
+
 		if (options.protocol == null) {
 			options.usage = "Must specify protocol";
 			return options;
 		}
-		
+
 		if (options.fileName == null && options.append) {
 			options.usage = "Cannot specify -a without specifying -f <file>";
 			return options;
 		}
-		
+
 		return options;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		Options options = parseOptions(args);
+
+	public static void main(final String[] args) throws Exception {
+		final Options options = parseOptions(args);
 
 		if (options.usage != null) {
 			usage(options.usage);
 			System.exit(1);
 		}
-		
+
 		if (!options.quiet) {
 			System.out.println("SyslogServer " + SyslogServer.getVersion());
 		}
-		
+
 		if (!SyslogServer.exists(options.protocol)) {
 			usage("Protocol \"" + options.protocol + "\" not supported");
 			System.exit(1);
 		}
-		
-		SyslogServerIF syslogServer = SyslogServer.getInstance(options.protocol);
-		
-		SyslogServerConfigIF syslogServerConfig = syslogServer.getConfig();
-		
+
+		final SyslogServerIF syslogServer = SyslogServer.getInstance(options.protocol);
+		final SyslogServerConfigIF syslogServerConfig = syslogServer.getConfig();
+
 		if (options.host != null) {
 			syslogServerConfig.setHost(options.host);
 			if (!options.quiet) {
@@ -121,15 +120,15 @@ public class SyslogServerMain {
 		}
 
 		if (options.fileName != null) {
-			SyslogServerEventHandlerIF eventHandler = new FileSyslogServerEventHandler(options.fileName,options.append);
+			final SyslogServerEventHandlerIF eventHandler = new FileSyslogServerEventHandler(options.fileName,options.append);
 			syslogServerConfig.addEventHandler(eventHandler);
 			if (!options.quiet) {
 				System.out.println((options.append ? "Appending" : "Writing") + " to file: " + options.fileName);
 			}
 		}
-		
+
 		if (!options.quiet) {
-			SyslogServerEventHandlerIF eventHandler = SystemOutSyslogServerEventHandler.create();
+			final SyslogServerEventHandlerIF eventHandler = SystemOutSyslogServerEventHandler.create();
 			syslogServerConfig.addEventHandler(eventHandler);
 		}
 

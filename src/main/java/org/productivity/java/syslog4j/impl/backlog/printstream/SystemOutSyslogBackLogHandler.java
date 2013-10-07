@@ -21,7 +21,7 @@ public class SystemOutSyslogBackLogHandler extends PrintStreamSyslogBackLogHandl
 	public SystemOutSyslogBackLogHandler() {
 		super(System.out,true);
 	}
-	public SystemOutSyslogBackLogHandler(boolean appendReason) {
+	public SystemOutSyslogBackLogHandler(final boolean appendReason) {
 		super(System.out,true,appendReason);
 	}
 }

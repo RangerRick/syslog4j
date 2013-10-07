@@ -1,75 +1,75 @@
 package org.productivity.java.syslog4j.impl.net.tcp.pool;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.productivity.java.syslog4j.SyslogIF;
 import org.productivity.java.syslog4j.SyslogPoolConfigIF;
 import org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig;
 
 /**
-* NetSyslogPoolFactory is an implementation of SyslogPoolConfigIF
-* which provides configuration support for the Apache Commons Pool.
-* 
-* <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
-* of the LGPL license is available in the META-INF folder in all
-* distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
-* 
-* @author &lt;syslog4j@productivity.org&gt;
-* @version $Id: PooledTCPNetSyslogConfig.java,v 1.3 2008/11/26 15:01:47 cvs Exp $
-*/
+ * NetSyslogPoolFactory is an implementation of SyslogPoolConfigIF
+ * which provides configuration support for the Apache Commons Pool.
+ * 
+ * <p>Syslog4j is licensed under the Lesser GNU Public License v2.1.  A copy
+ * of the LGPL license is available in the META-INF folder in all
+ * distributions of Syslog4j and in the base directory of the "doc" ZIP.</p>
+ * 
+ * @author &lt;syslog4j@productivity.org&gt;
+ * @version $Id: PooledTCPNetSyslogConfig.java,v 1.3 2008/11/26 15:01:47 cvs Exp $
+ */
 public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements SyslogPoolConfigIF {
-	private static final long serialVersionUID = 2283355983363422888L;
-	
-	protected int maxActive							= SYSLOG_POOL_CONFIG_MAX_ACTIVE_DEFAULT;
-	protected int maxIdle							= SYSLOG_POOL_CONFIG_MAX_IDLE_DEFAULT;
-	protected long maxWait							= SYSLOG_POOL_CONFIG_MAX_WAIT_DEFAULT;
-	protected long minEvictableIdleTimeMillis		= SYSLOG_POOL_CONFIG_MIN_EVICTABLE_IDLE_TIME_MILLIS_DEFAULT;
-	protected int minIdle							= SYSLOG_POOL_CONFIG_MIN_IDLE_DEFAULT;
-	protected int numTestsPerEvictionRun			= SYSLOG_POOL_CONFIG_NUM_TESTS_PER_EVICTION_RUN_DEFAULT;
+	private static final long serialVersionUID = 8598595978736573641L;
+
+	protected int maxActive				= SYSLOG_POOL_CONFIG_MAX_ACTIVE_DEFAULT;
+	protected int maxIdle				= SYSLOG_POOL_CONFIG_MAX_IDLE_DEFAULT;
+	protected long maxWait				= SYSLOG_POOL_CONFIG_MAX_WAIT_DEFAULT;
+	protected long minEvictableIdleTimeMillis	= SYSLOG_POOL_CONFIG_MIN_EVICTABLE_IDLE_TIME_MILLIS_DEFAULT;
+	protected int minIdle				= SYSLOG_POOL_CONFIG_MIN_IDLE_DEFAULT;
+	protected int numTestsPerEvictionRun		= SYSLOG_POOL_CONFIG_NUM_TESTS_PER_EVICTION_RUN_DEFAULT;
 	protected long softMinEvictableIdleTimeMillis	= SYSLOG_POOL_CONFIG_SOFT_MIN_EVICTABLE_IDLE_TIME_MILLIS_DEFAULT;
 	protected long timeBetweenEvictionRunsMillis	= SYSLOG_POOL_CONFIG_TIME_BETWEEN_EVICTION_RUNS_MILLIS_DEFAULT;
-	protected byte whenExhaustedAction				= GenericObjectPool.WHEN_EXHAUSTED_BLOCK;
-	protected boolean testOnBorrow					= SYSLOG_POOL_CONFIG_TEST_ON_BORROW_DEFAULT;
-	protected boolean testOnReturn					= SYSLOG_POOL_CONFIG_TEST_ON_RETURN_DEFAULT;
-	protected boolean testWhileIdle					= SYSLOG_POOL_CONFIG_TEST_WHILE_IDLE_DEFAULT;
-	
+	protected byte whenExhaustedAction		= GenericObjectPool.WHEN_EXHAUSTED_BLOCK;
+	protected boolean testOnBorrow			= SYSLOG_POOL_CONFIG_TEST_ON_BORROW_DEFAULT;
+	protected boolean testOnReturn			= SYSLOG_POOL_CONFIG_TEST_ON_RETURN_DEFAULT;
+	protected boolean testWhileIdle			= SYSLOG_POOL_CONFIG_TEST_WHILE_IDLE_DEFAULT;
+
 	public PooledTCPNetSyslogConfig() {
-		//
 	}
 
-	public PooledTCPNetSyslogConfig(int facility, String host, int port) {
+	public PooledTCPNetSyslogConfig(final int facility, final String host, final int port) {
 		super(facility, host, port);
 	}
 
-	public PooledTCPNetSyslogConfig(int facility, String host) {
+	public PooledTCPNetSyslogConfig(final int facility, final String host) {
 		super(facility, host);
 	}
 
-	public PooledTCPNetSyslogConfig(int facility) {
+	public PooledTCPNetSyslogConfig(final int facility) {
 		super(facility);
 	}
 
-	public PooledTCPNetSyslogConfig(String host, int port) {
+	public PooledTCPNetSyslogConfig(final String host, final int port) {
 		super(host, port);
 	}
 
-	public PooledTCPNetSyslogConfig(String host) {
+	public PooledTCPNetSyslogConfig(final String host) {
 		super(host);
 	}
-	
-	protected void configureThreadedValues(int value) {
+
+	protected void configureThreadedValues(final int value) {
 		if (isThreaded()) {
 			this.minIdle = value;
 			this.maxIdle = value;
 			this.maxActive = value;
 		}
 	}
-	
+
 	public int getMaxActive() {
 		return this.maxActive;
 	}
 
-	public void setMaxActive(int maxActive) {
+	public void setMaxActive(final int maxActive) {
 		configureThreadedValues(maxActive);
-		
+
 		this.maxActive = maxActive;
 	}
 
@@ -77,9 +77,8 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.maxIdle;
 	}
 
-	public void setMaxIdle(int maxIdle) {
+	public void setMaxIdle(final int maxIdle) {
 		configureThreadedValues(maxIdle);
-		
 		this.maxIdle = maxIdle;
 	}
 
@@ -87,7 +86,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.maxWait;
 	}
 
-	public void setMaxWait(long maxWait) {
+	public void setMaxWait(final long maxWait) {
 		this.maxWait = maxWait;
 	}
 
@@ -95,7 +94,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.minEvictableIdleTimeMillis;
 	}
 
-	public void setMinEvictableIdleTimeMillis(long minEvictableIdleTimeMillis) {
+	public void setMinEvictableIdleTimeMillis(final long minEvictableIdleTimeMillis) {
 		this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
 	}
 
@@ -103,9 +102,9 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.minIdle;
 	}
 
-	public void setMinIdle(int minIdle) {
+	public void setMinIdle(final int minIdle) {
 		configureThreadedValues(minIdle);
-		
+
 		this.minIdle = minIdle;
 	}
 
@@ -113,7 +112,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.numTestsPerEvictionRun;
 	}
 
-	public void setNumTestsPerEvictionRun(int numTestsPerEvictionRun) {
+	public void setNumTestsPerEvictionRun(final int numTestsPerEvictionRun) {
 		this.numTestsPerEvictionRun = numTestsPerEvictionRun;
 	}
 
@@ -121,8 +120,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.softMinEvictableIdleTimeMillis;
 	}
 
-	public void setSoftMinEvictableIdleTimeMillis(
-			long softMinEvictableIdleTimeMillis) {
+	public void setSoftMinEvictableIdleTimeMillis(final long softMinEvictableIdleTimeMillis) {
 		this.softMinEvictableIdleTimeMillis = softMinEvictableIdleTimeMillis;
 	}
 
@@ -130,7 +128,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.timeBetweenEvictionRunsMillis;
 	}
 
-	public void setTimeBetweenEvictionRunsMillis(long timeBetweenEvictionRunsMillis) {
+	public void setTimeBetweenEvictionRunsMillis(final long timeBetweenEvictionRunsMillis) {
 		this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
 	}
 
@@ -138,7 +136,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.whenExhaustedAction;
 	}
 
-	public void setWhenExhaustedAction(byte whenExhaustedAction) {
+	public void setWhenExhaustedAction(final byte whenExhaustedAction) {
 		this.whenExhaustedAction = whenExhaustedAction;
 	}
 
@@ -146,7 +144,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.testOnBorrow;
 	}
 
-	public void setTestOnBorrow(boolean testOnBorrow) {
+	public void setTestOnBorrow(final boolean testOnBorrow) {
 		this.testOnBorrow = testOnBorrow;
 	}
 
@@ -154,7 +152,7 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.testOnReturn;
 	}
 
-	public void setTestOnReturn(boolean testOnReturn) {
+	public void setTestOnReturn(final boolean testOnReturn) {
 		this.testOnReturn = testOnReturn;
 	}
 
@@ -162,11 +160,11 @@ public class PooledTCPNetSyslogConfig extends TCPNetSyslogConfig implements Sysl
 		return this.testWhileIdle;
 	}
 
-	public void setTestWhileIdle(boolean testWhileIdle) {
+	public void setTestWhileIdle(final boolean testWhileIdle) {
 		this.testWhileIdle = testWhileIdle;
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return PooledTCPNetSyslog.class;
 	}
 }

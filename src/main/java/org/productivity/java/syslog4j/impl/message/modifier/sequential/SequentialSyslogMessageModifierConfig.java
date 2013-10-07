@@ -14,17 +14,15 @@ import org.productivity.java.syslog4j.impl.message.modifier.AbstractSyslogMessag
 * @version $Id: SequentialSyslogMessageModifierConfig.java,v 1.4 2009/03/29 17:38:58 cvs Exp $
 */
 public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessageModifierConfig {
-	private static final long serialVersionUID = 1570930406228960303L;
-	
+	private static final long serialVersionUID = 1593448988608941986L;
+
 	protected long firstNumber = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_FIRST_NUMBER_DEFAULT;
 	protected long lastNumber = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_LAST_NUMBER_DEFAULT;
 	protected char padChar = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_PAD_CHAR_DEFAULT;
 	protected boolean usePadding = SYSLOG_SEQUENTIAL_MESSAGE_MODIFIER_USE_PADDING_DEFAULT;
 	
 	public static final SequentialSyslogMessageModifierConfig createDefault() {
-		SequentialSyslogMessageModifierConfig modifierConfig = new SequentialSyslogMessageModifierConfig();
-		
-		return modifierConfig;
+		return new SequentialSyslogMessageModifierConfig();
 	}
 
 	public SequentialSyslogMessageModifierConfig() {
@@ -40,7 +38,7 @@ public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessage
 		return this.firstNumber;
 	}
 	
-	public void setFirstNumber(long firstNumber) {
+	public void setFirstNumber(final long firstNumber) {
 		if (firstNumber < this.lastNumber) {
 			this.firstNumber = firstNumber;
 		}
@@ -50,7 +48,7 @@ public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessage
 		return this.lastNumber;
 	}
 	
-	public void setLastNumber(long lastNumber) {
+	public void setLastNumber(final long lastNumber) {
 		if (lastNumber > this.firstNumber) {
 			this.lastNumber = lastNumber;
 		}
@@ -60,7 +58,7 @@ public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessage
 		return this.usePadding;
 	}
 
-	public void setUsePadding(boolean usePadding) {
+	public void setUsePadding(final boolean usePadding) {
 		this.usePadding = usePadding;
 	}
 
@@ -68,7 +66,7 @@ public class SequentialSyslogMessageModifierConfig extends AbstractSyslogMessage
 		return this.padChar;
 	}
 	
-	public void setPadChar(char padChar) {
+	public void setPadChar(final char padChar) {
 		this.padChar = padChar;
 	}
 }

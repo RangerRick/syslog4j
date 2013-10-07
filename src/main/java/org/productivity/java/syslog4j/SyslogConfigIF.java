@@ -12,7 +12,7 @@ package org.productivity.java.syslog4j;
 * @version $Id: SyslogConfigIF.java,v 1.18 2009/07/22 15:54:23 cvs Exp $
 */
 public interface SyslogConfigIF extends SyslogConstants, SyslogCharSetIF {
-	public Class getSyslogClass();
+	public Class<? extends SyslogIF> getSyslogClass();
 	
 	public int getFacility();
 	public void setFacility(int facility);

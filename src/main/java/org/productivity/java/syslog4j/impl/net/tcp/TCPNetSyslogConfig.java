@@ -1,6 +1,8 @@
 package org.productivity.java.syslog4j.impl.net.tcp;
 
 import org.productivity.java.syslog4j.SyslogConstants;
+import org.productivity.java.syslog4j.SyslogIF;
+import org.productivity.java.syslog4j.impl.AbstractSyslogWriter;
 import org.productivity.java.syslog4j.impl.net.AbstractNetSyslogConfig;
 import org.productivity.java.syslog4j.util.SyslogUtility;
 
@@ -16,13 +18,12 @@ import org.productivity.java.syslog4j.util.SyslogUtility;
 * @version $Id: TCPNetSyslogConfig.java,v 1.17 2009/03/29 17:38:58 cvs Exp $
 */
 public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNetSyslogConfigIF {
-	private static final long serialVersionUID = 9023152050686365460L;
-	
+	private static final long serialVersionUID = 4417463267744860981L;
+
 	public static byte[] SYSTEM_DELIMITER_SEQUENCE = null;
 	
 	static {
-		String delimiterSequence = System.getProperty("line.separator");
-		
+		final String delimiterSequence = System.getProperty("line.separator");
 		SYSTEM_DELIMITER_SEQUENCE = delimiterSequence.getBytes();
 		
 		if (SYSTEM_DELIMITER_SEQUENCE == null || SYSTEM_DELIMITER_SEQUENCE.length < 1) {
@@ -48,35 +49,34 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 	}
 	
 	protected void initialize() {
-		//
 	}
 
-	public TCPNetSyslogConfig(int facility, String host, int port) {
+	public TCPNetSyslogConfig(final int facility, final String host, final int port) {
 		super(facility, host, port);
 		initialize();
 	}
 
-	public TCPNetSyslogConfig(int facility, String host) {
+	public TCPNetSyslogConfig(final int facility, final String host) {
 		super(facility, host);
 		initialize();
 	}
 
-	public TCPNetSyslogConfig(int facility) {
+	public TCPNetSyslogConfig(final int facility) {
 		super(facility);
 		initialize();
 	}
 
-	public TCPNetSyslogConfig(String host, int port) {
+	public TCPNetSyslogConfig(final String host, final int port) {
 		super(host, port);
 		initialize();
 	}
 
-	public TCPNetSyslogConfig(String host) {
+	public TCPNetSyslogConfig(final String host) {
 		super(host);
 		initialize();
 	}
 
-	public Class getSyslogClass() {
+	public Class<? extends SyslogIF> getSyslogClass() {
 		return TCPNetSyslog.class;
 	}
 	
@@ -84,11 +84,11 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.delimiterSequence;
 	}
 
-	public void setDelimiterSequence(byte[] delimiterSequence) {
+	public void setDelimiterSequence(final byte[] delimiterSequence) {
 		this.delimiterSequence = delimiterSequence;
 	}
 
-	public void setDelimiterSequence(String delimiterSequence) {
+	public void setDelimiterSequence(final String delimiterSequence) {
 		this.delimiterSequence = SyslogUtility.getBytes(this,delimiterSequence);
 	}
 
@@ -96,7 +96,7 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.persistentConnection;
 	}
 
-	public void setPersistentConnection(boolean persistentConnection) {
+	public void setPersistentConnection(final boolean persistentConnection) {
 		this.persistentConnection = persistentConnection;
 	}
 
@@ -104,7 +104,7 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.soLinger;
 	}
 
-	public void setSoLinger(boolean soLinger) {
+	public void setSoLinger(final boolean soLinger) {
 		this.soLinger = soLinger;
 	}
 
@@ -112,7 +112,7 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.soLingerSeconds;
 	}
 
-	public void setSoLingerSeconds(int soLingerSeconds) {
+	public void setSoLingerSeconds(final int soLingerSeconds) {
 		this.soLingerSeconds = soLingerSeconds;
 	}
 
@@ -120,7 +120,7 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.keepAlive;
 	}
 
-	public void setKeepAlive(boolean keepAlive) {
+	public void setKeepAlive(final boolean keepAlive) {
 		this.keepAlive = keepAlive;
 	}
 
@@ -128,7 +128,7 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.reuseAddress;
 	}
 
-	public void setReuseAddress(boolean reuseAddress) {
+	public void setReuseAddress(final boolean reuseAddress) {
 		this.reuseAddress = reuseAddress;
 	}
 
@@ -136,11 +136,11 @@ public class TCPNetSyslogConfig extends AbstractNetSyslogConfig implements TCPNe
 		return this.setBufferSize;
 	}
 
-	public void setSetBufferSize(boolean setBufferSize) {
+	public void setSetBufferSize(final boolean setBufferSize) {
 		this.setBufferSize = setBufferSize;
 	}
 
-	public Class getSyslogWriterClass() {
+	public Class<? extends AbstractSyslogWriter> getSyslogWriterClass() {
 		return TCPNetSyslogWriter.class;
 	}
 }
